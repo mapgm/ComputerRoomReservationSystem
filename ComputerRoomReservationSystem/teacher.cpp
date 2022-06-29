@@ -9,7 +9,9 @@ Teacher::Teacher()
 // 有参构造(职工编号，姓名，密码)
 Teacher::Teacher(int empId, string name, string pwd)
 {
-
+	this->empId = empId;
+	this->name = name;
+	this->pwd = pwd;
 }
 
 // 菜单界面

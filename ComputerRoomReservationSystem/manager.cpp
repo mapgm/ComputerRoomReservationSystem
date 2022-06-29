@@ -9,19 +9,110 @@ Manager::Manager()
 // 有参构造(管理员姓名，密码)
 Manager::Manager(string name, string pwd)
 {
+	this->name = name;
+	this->pwd = pwd;
 
+	// 初始化容器
+	this->initVector();
 }
 
 // 选择菜单
 void Manager::operMenu()
 {
-
+	cout << "欢迎管理员：" << this->name << "登录！" << endl;
+	cout << "\t\t ---------------------------------\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|          1.添加账号            |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|          2.查看账号            |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|          3.查看机房            |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|          4.清空预约            |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|          0.注销登录            |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t ---------------------------------\n";
+	cout << "请选择您的操作： " << endl;
 }
 
 // 添加账号  
 void Manager::addPerson()
 {
+	cout << "请输入添加账号的类型" << endl;
+	cout << "1、添加学生" << endl;
+	cout << "2、添加老师" << endl;
 
+	string fileName;
+	string tip;
+	ofstream ofs;
+
+	int select = 0;
+	while (cin >> select)
+	{
+		if (select == 1 || select == 2)
+		{
+			break;
+		}
+		else
+		{
+			cout << "输入错误，请重新输入添加账号的类型" << endl;
+		}
+	}
+
+	string errorTip; // 重复错误提示
+
+	if (select == 1)
+	{
+		fileName = STUDENT_FILE;
+		tip = "请输入学号： ";
+		errorTip = "学号重复，请重新输入";
+	}
+	else
+	{
+		fileName = TEACHER_FILE;
+		tip = "请输入职工编号：";
+		errorTip = "职工号重复，请重新输入";
+	}
+
+	ofs.open(fileName, ios::out | ios::app);
+	int id;
+	string name;
+	string pwd;
+	cout << tip << endl;
+
+	while (true)
+	{
+		cin >> id;
+
+		bool ret = this->checkRepeat(id, select);
+
+		if (ret) // 有重复
+		{
+			cout << errorTip << endl;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	cout << "请输入姓名： " << endl;
+	cin >> name;
+
+	cout << "请输入密码： " << endl;
+	cin >> pwd;
+
+	ofs << id << " " << name << " " << pwd << " " << endl;
+	cout << "添加成功" << endl;
+
+	system("pause");
+	system("cls");
+
+	ofs.close();
+
+	// 初始化容器
+	this->initVector();
 }
 
 // 查看账号
@@ -40,4 +131,64 @@ void Manager::showComputer()
 void Manager::cleanFile()
 {
 
+}
+
+// 初始化容器
+void Manager::initVector()
+{
+	// 读取学生文件中信息
+	ifstream ifs;
+	ifs.open(STUDENT_FILE, ios::in);
+	if (!ifs.is_open())
+	{
+		cout << "文件读取失败" << endl;
+		return;
+	}
+
+	vStu.clear();
+	vTea.clear();
+
+	Student s;
+	while (ifs >> s.id && ifs >> s.name && ifs >> s.pwd)
+	{
+		vStu.push_back(s);
+	}
+	ifs.close();
+
+	// 读取老师文件信息
+	ifs.open(TEACHER_FILE, ios::in);
+
+	Teacher t;
+	while (ifs >> t.empId && ifs >> t.name && ifs >> t.pwd)
+	{
+		vTea.push_back(t);
+	}
+
+	ifs.close();
+}
+
+// 检测重复 参数:(传入id，传入类型) 返回值：(true 代表有重复，false代表没有重复)
+bool Manager::checkRepeat(int id, int type)
+{
+	if (type == 1)
+	{
+		for (vector<Student>::iterator it = vStu.begin(); it != vStu.end(); it++)
+		{
+			if (id == it->id)
+			{
+				return true;
+			}
+		}
+	}
+	else
+	{
+		for (vector<Teacher>::iterator it = vTea.begin(); it != vTea.end(); it++)
+		{
+			if (id == it->empId)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }

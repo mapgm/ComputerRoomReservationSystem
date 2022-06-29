@@ -9,7 +9,9 @@ Student::Student()
 // 有参构造(学号、姓名、密码)
 Student::Student(int id, string name, string pwd)
 {
-
+	this->id = id;
+	this->name = name;
+	this->pwd = pwd;
 }
 
 // 菜单界面
