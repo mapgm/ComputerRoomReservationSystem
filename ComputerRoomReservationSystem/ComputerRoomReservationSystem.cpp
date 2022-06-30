@@ -49,6 +49,46 @@ void managerMenu(Identity*& manager)
 	}
 }
 
+// 学生菜单
+void studentMenu(Identity*& student)
+{
+	while (true)
+	{
+		// 学生菜单
+		student->operMenu();
+
+		Student* stu = (Student*)student;
+		int select = 0;
+
+		cin >> select;
+
+		if (select == 1) // 申请预约
+		{
+			stu->applyOrder();
+		}
+		else if (select == 2) // 查看自身预约
+		{
+			stu->showMyOrder();
+		}
+		else if (select == 3) // 查看所有预约
+		{
+			stu->showAllOrder();
+		}
+		else if (select == 4) // 取消预约
+		{
+			stu->cancelOrder();
+		}
+		else
+		{
+			delete student;
+			cout << "注销成功" << endl;
+			system("pause");
+			system("cls");
+			return;
+		}
+	}
+}
+
 // 登录功能
 void loginIn(string fileName, int type)
 {
@@ -101,6 +141,8 @@ void loginIn(string fileName, int type)
 				system("pause");
 				system("cls");
 				person = new Student(id, name, pwd);
+				// 进入学生子菜单
+				studentMenu(person);
 				return;
 			}
 		}

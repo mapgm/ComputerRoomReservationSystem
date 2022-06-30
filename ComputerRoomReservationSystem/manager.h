@@ -2,10 +2,12 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 #include "Identity.h"
 #include "globalFile.h"
 #include "student.h"
 #include "teacher.h"
+#include "computerRoom.h"
 using namespace std;
 
 class Manager: public Identity
@@ -44,4 +46,7 @@ public:
 
 	// 教师容器
 	vector<Teacher> vTea;
+
+	// 机房容器
+	vector<ComputerRoom> vCom;
 };
