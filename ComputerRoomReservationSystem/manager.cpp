@@ -37,7 +37,6 @@ Manager::Manager(string name, string pwd)
 	{
 		vCom.push_back(c);
 	}
-	cout << "当前机房数量为： " << vCom.size() << endl;
 
 	ifs.close();
 }
