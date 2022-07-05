@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <string>
 #include "Identity.h"
 #include "globalFile.h"
 #include "student.h"
@@ -39,6 +40,9 @@ public:
 
 	// 检测重复 参数:(传入id，传入类型) 返回值：(true 代表有重复，false代表没有重复)
 	bool checkRepeat(int id, int type);
+
+	// 删除学生/老师账号
+	void deletePerson();
 
 public:
 	// 学生容器

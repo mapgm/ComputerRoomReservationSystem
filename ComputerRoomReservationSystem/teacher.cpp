@@ -25,7 +25,9 @@ void Teacher::operMenu()
 	cout << "\t\t|                                  |\n";
 	cout << "\t\t|          2.审核预约              |\n";
 	cout << "\t\t|                                  |\n";
-	cout << "\t\t|          0.注销登录              |\n";
+	cout << "\t\t|          3.注销账号              |\n";
+	cout << "\t\t|                                  |\n";
+	cout << "\t\t|          0.退出登录              |\n";
 	cout << "\t\t|                                  |\n";
 	cout << "\t\t ----------------------------------\n";
 	cout << "请选择您的操作： " << endl;
@@ -144,4 +146,69 @@ void Teacher::validOrder()
 
 	system("pause");
 	system("cls");
+}
+
+// 注销账号
+void Teacher::deletePerson()
+{
+	cout << "确定是否注销本账号？" << endl;
+	cout << "1. 确定" << endl;
+	cout << "2. 取消" << endl;
+
+	int select;
+	cin >> select;
+	if (select == 1)
+	{
+		ofstream ofs;
+		ofs.open(TEACHER_FILE, ios::out);
+		for (vector<Teacher>::iterator iter = vTea.begin(); iter != vTea.end(); iter++)
+		{
+			if (iter->empId == this->empId)
+			{
+				continue;
+			}
+			else
+			{
+				ofs << iter->empId << " " << iter->name << " " << pwd << endl;
+			}
+		}
+
+		ofs.close();
+		this->isExist = true;
+		cout << "注销成功！" << endl;
+
+		system("pause");
+		system("cls");
+
+		// 初始化容器
+		this->initVector();
+	}
+	else
+	{
+		system("pause");
+		system("cls");
+	}
+}
+
+// 初始化容器
+void Teacher::initVector()
+{
+	// 读取教师文件中信息
+	ifstream ifs;
+	ifs.open(TEACHER_FILE, ios::in);
+	if (!ifs.is_open())
+	{
+		cout << "文件读取失败" << endl;
+		return;
+	}
+
+	vTea.clear();
+
+	Teacher s;
+	while (ifs >> s.empId && ifs >> s.name && ifs >> s.pwd)
+	{
+		vTea.push_back(s);
+	}
+
+	ifs.close();
 }

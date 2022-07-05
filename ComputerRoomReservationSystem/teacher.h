@@ -24,7 +24,19 @@ public:
 	// 审核预约
 	void validOrder();
 
+	// 注销账号
+	void deletePerson();
+
+	// 初始化容器
+	void initVector();
+
 public:
 	// 教师编号
 	int empId; 
+
+	// 教师容器
+	vector<Teacher> vTea;
+
+	// 账号是否被注销
+	bool isExist;
 };

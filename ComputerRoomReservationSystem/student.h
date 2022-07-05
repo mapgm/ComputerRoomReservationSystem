@@ -34,10 +34,22 @@ public:
 	// 取消预约
 	void cancelOrder();
 
+	// 注销账号
+	void deletePerson();
+
+	// 初始化容器
+	void initVector();
+
 public:
 	// 学生学号
 	int id;
 
 	// 机房容器
 	vector<ComputerRoom> vCom;
+
+	// 学生容器
+	vector<Student> vStu;
+
+	// 账号是否被注销
+	bool isExist;
 };

@@ -49,11 +49,13 @@ void Manager::operMenu()
 	cout << "\t\t|                                |\n";
 	cout << "\t\t|          1.添加账号            |\n";
 	cout << "\t\t|                                |\n";
-	cout << "\t\t|          2.查看账号            |\n";
+	cout << "\t\t|          2.删除账号            |\n";
 	cout << "\t\t|                                |\n";
-	cout << "\t\t|          3.查看机房            |\n";
+	cout << "\t\t|          3.查看账号            |\n";
 	cout << "\t\t|                                |\n";
-	cout << "\t\t|          4.清空预约            |\n";
+	cout << "\t\t|          4.查看机房            |\n";
+	cout << "\t\t|                                |\n";
+	cout << "\t\t|          5.清空预约            |\n";
 	cout << "\t\t|                                |\n";
 	cout << "\t\t|          0.注销登录            |\n";
 	cout << "\t\t|                                |\n";
@@ -246,4 +248,102 @@ bool Manager::checkRepeat(int id, int type)
 		}
 	}
 	return false;
+}
+
+// 删除学生/老师账号
+void Manager::deletePerson()
+{
+	cout << "请输入删除账号的类型" << endl;
+	cout << "1、删除学生" << endl;
+	cout << "2、删除老师" << endl;
+
+	string fileName;
+	string tip;
+
+	int select = 0;
+	while (cin >> select)
+	{
+		if (select == 1 || select == 2)
+		{
+			break;
+		}
+		else
+		{
+			cout << "输入错误，请重新输入删除账号的类型" << endl;
+		}
+	}
+
+	string errorTip; // 重复错误提示
+
+	if (select == 1)
+	{
+		fileName = STUDENT_FILE;
+		tip = "请输入删除的学生的学号： ";
+		errorTip = "学号不存在，请重新输入";
+	}
+	else
+	{
+		fileName = TEACHER_FILE;
+		tip = "请输入删除的职工的编号：";
+		errorTip = "职工号不存在，请重新输入";
+	}
+
+	int id;
+	cout << tip << endl;
+
+	while (true)
+	{
+		cin >> id;
+
+		bool ret = this->checkRepeat(id, select);
+
+		if (ret) // 存在该号码
+		{
+			break;
+		}
+		else
+		{
+			cout << errorTip << endl;
+		}
+	}
+
+	ofstream ofs;
+	ofs.open(fileName, ios::out);
+	if (select == 1)
+	{
+		for (vector<Student>::iterator iter = vStu.begin(); iter != vStu.end(); iter++)
+		{
+			if (iter->id == id)
+			{
+				continue;
+			}
+			else
+			{
+				ofs << iter->id << " " << iter->name << " " << pwd << endl;
+			}
+		}
+	}
+	else
+	{
+		for (vector<Teacher>::iterator iter = vTea.begin(); iter != vTea.end(); iter++)
+		{
+			if (iter->empId == id)
+			{
+				continue;
+			}
+			else
+			{
+				ofs << iter->empId << " " << iter->name << " " << pwd << endl;
+			}
+		}
+	}
+
+	ofs.close();
+	cout << "删除成功！" << endl;
+
+	system("pause");
+	system("cls");
+
+	// 初始化容器
+	this->initVector();
 }

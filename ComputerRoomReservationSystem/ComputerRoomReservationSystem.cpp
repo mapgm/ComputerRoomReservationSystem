@@ -26,15 +26,19 @@ void managerMenu(Identity*& manager)
 		{
 			man->addPerson();
 		}
-		else if (select == 2) // 查看账号
+		else if (select == 2) // 删除账号
+		{
+			man->deletePerson();
+		}
+		else if (select == 3) // 查看账号
 		{
 			man->showPerson();
 		}
-		else if (select == 3) // 查看机房
+		else if (select == 4) // 查看机房
 		{
 			man->showComputer();
 		}
-		else if (select == 4) // 清空预约
+		else if (select == 5) // 清空预约
 		{
 			man->cleanFile();
 		}
@@ -78,13 +82,21 @@ void studentMenu(Identity*& student)
 		{
 			stu->cancelOrder();
 		}
+		else if (select == 5) // 注销账号
+		{
+			stu->deletePerson();
+		}
 		else
 		{
 			delete student;
-			cout << "注销成功" << endl;
+			cout << "退出成功" << endl;
 			system("pause");
 			system("cls");
 			return;
+		}
+		if (stu->isExist)
+		{
+			break;
 		}
 	}
 }
@@ -112,13 +124,22 @@ void teacherMenu(Identity*& teacher)
 			// 审核预约
 			tea->validOrder();
 		}
+		else if (select == 3)
+		{
+			// 注销账号
+			tea->deletePerson();
+		}
 		else
 		{
 			delete teacher;
-			cout << "注销成功" << endl;
+			cout << "退出成功" << endl;
 			system("pause");
 			system("cls");
 			return;
+		}
+		if (tea->isExist)
+		{
+			break;
 		}
 	}
 }

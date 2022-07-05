@@ -41,7 +41,9 @@ void Student::operMenu()
 	cout << "\t\t|                                 |\n";
 	cout << "\t\t|          4.取消预约              |\n";
 	cout << "\t\t|                                 |\n";
-	cout << "\t\t|          0.注销登录              |\n";
+	cout << "\t\t|          5.注销账号              |\n";
+	cout << "\t\t|                                 |\n";
+	cout << "\t\t|          0.退出登录              |\n";
 	cout << "\t\t|                                 |\n";
 	cout << "\t\t ----------------------------------\n";
 	cout << "请选择您的操作： " << endl;
@@ -99,6 +101,24 @@ void Student::applyOrder()
 			break;
 		}
 		cout << "输入有误，请重新输入" << endl;
+	}
+
+	OrderFile of;
+	if (of.size != 0)
+	{
+		for (int i = 0; i < of.size; i++)
+		{
+			if (to_string(date) == of.m_orderData[i]["date"] && 
+				to_string(interval) == of.m_orderData[i]["interval"] &&
+				to_string(room) == of.m_orderData[i]["roomId"] &&
+				to_string(2) == of.m_orderData[i]["status"])
+			{
+				cout << "本时间段机房已被占用，请重新选择！" << endl;
+				system("pause");
+				system("cls");
+				return;
+			}
+		}
 	}
 
 	cout << "预约成功！审核中" << endl;
@@ -272,4 +292,69 @@ void Student::cancelOrder()
 
 	system("pause");
 	system("cls");
+}
+
+// 初始化容器
+void Student::initVector()
+{
+	// 读取学生文件中信息
+	ifstream ifs;
+	ifs.open(STUDENT_FILE, ios::in);
+	if (!ifs.is_open())
+	{
+		cout << "文件读取失败" << endl;
+		return;
+	}
+
+	vStu.clear();
+
+	Student s;
+	while (ifs >> s.id && ifs >> s.name && ifs >> s.pwd)
+	{
+		vStu.push_back(s);
+	}
+
+	ifs.close();
+}
+
+// 注销账号
+void Student::deletePerson()
+{
+	cout << "确定是否注销本账号？" << endl;
+	cout << "1. 确定" << endl;
+	cout << "2. 取消" << endl;
+
+	int select;
+	cin >> select;
+	if (select == 1)
+	{
+		ofstream ofs;
+		ofs.open(STUDENT_FILE, ios::out);
+		for (vector<Student>::iterator iter = vStu.begin(); iter != vStu.end(); iter++)
+		{
+			if (iter->id == this->id)
+			{
+				continue;
+			}
+			else
+			{
+				ofs << iter->id << " " << iter->name << " " << pwd << endl;
+			}
+		}
+
+		ofs.close();
+		this->isExist = true;
+		cout << "注销成功！" << endl;
+
+		system("pause");
+		system("cls");
+
+		// 初始化容器
+		this->initVector();
+	}
+	else
+	{
+		system("pause");
+		system("cls");
+	}
 }
